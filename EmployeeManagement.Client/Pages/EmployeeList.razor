@@ -1,0 +1,79 @@
+@page "/"
+@using EmployeeManagement.Model
+@using System.Collections.Generic;
+
+<h3>Emplyee List</h3>
+
+@if(Employees == null)
+{
+    <div class="lds-dual-ring"></div>
+}
+else
+{
+    <div class="card-deck">
+        @foreach(var employeeIndex in Employees)
+        {
+            <div class="card m-3" style="min-width: 18rem; max-width:30.5%;">
+                <div class="card-header">
+                    <h3>@employeeIndex.FirstName @employeeIndex.LastName</h3>
+                </div>
+                <img class="card-img-top imageThumbnail" src="@employeeIndex.PhotoPath"/>
+                <div class="card-footer text-center">
+                    <a href="#" class="btn btn-primary m-1">View</a>
+                    <a href="#" class="btn btn-primary m-1">Edit</a>
+                    <a href="#" class="btn btn-danger m-1">Delete</a>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code{
+    public IEnumerable<Employee> Employees { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Run(LoadEmployeesHardCoded);
+    }
+
+    private void LoadEmployeesHardCoded()
+    {
+        System.Threading.Thread.Sleep(3000);
+        Employee e1 = new Employee
+        {
+            EmployeeId = 0,
+            FirstName = "John",
+            LastName = "Snow",
+            Email = "JS@gmail.com",
+            DateOfBirth = new DateTime(1989, 10, 5),
+            Gender = Gender.Male,
+            Department = new Department
+            {
+                DepartmentId = 0,
+                DepartmentName = "Stark"
+            },
+            PhotoPath = ""
+
+        };
+
+        Employee e2 = new Employee
+        {
+            EmployeeId = 1,
+            FirstName = "Jamie",
+            LastName = "Lannister",
+            Email = "JL1v1MeBro@gmail.com",
+            DateOfBirth = new DateTime(1980, 3, 12),
+            Gender = Gender.Male,
+            Department = new Department
+            {
+                DepartmentId = 0,
+                DepartmentName = "Lannister"
+            },
+            PhotoPath = "",
+        };
+
+        Employees = new List<Employee> { e1, e2 };
+
+    }
+
+}
