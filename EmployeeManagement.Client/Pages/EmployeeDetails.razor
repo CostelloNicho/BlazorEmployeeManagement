@@ -1,0 +1,46 @@
+﻿@page "/employeedetails/{id}"
+
+@using EmployeeManagement.Model
+@using EmployeeManagement.Client.Services;
+
+    <div class="row justify-content-center m-3">
+        <div class="col-sm-8">
+            <div class="card">
+                <div class="card-header">
+                    <h1>@Employee.FirstName @Employee.LastName</h1>
+                </div>
+
+                <div class="card-body text-center">
+                    <img class="card-img-top" src="@Employee.PhotoPath" />
+
+                    <h4>Employee ID : @Employee.EmployeeId</h4>
+                    <h4>Email : @Employee.Email</h4>
+                    <h4>Department : @Employee.DepartmentId</h4>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="/" class="btn btn-primary">Back</a>
+                    <a href="#" class="btn btn-primary">Edit</a>
+                    <a href="#" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+@code {
+
+    [Inject]
+    public IEmployeeService EmployeeService { get; set; }
+
+    [Parameter]
+    public string Id { get; set; }
+
+    public Employee Employee { get; set; } = new Employee();
+
+    protected async override Task OnInitializedAsync()
+    {
+        Employee = await EmployeeService.GetEmployee(int.Parse(Id));
+    }
+
+}

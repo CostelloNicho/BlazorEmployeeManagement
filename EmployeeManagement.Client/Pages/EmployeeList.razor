@@ -1,6 +1,7 @@
 @page "/"
 @using EmployeeManagement.Model
 @using System.Collections.Generic;
+@using EmployeeManagement.Client.Services;
 
 <h3>Emplyee List</h3>
 
@@ -19,7 +20,7 @@ else
                 </div>
                 <img class="card-img-top imageThumbnail" src="@employeeIndex.PhotoPath"/>
                 <div class="card-footer text-center">
-                    <a href="#" class="btn btn-primary m-1">View</a>
+                    <a href="@($"employeedetails/{employeeIndex.EmployeeId}")" class="btn btn-primary m-1">View</a>
                     <a href="#" class="btn btn-primary m-1">Edit</a>
                     <a href="#" class="btn btn-danger m-1">Delete</a>
                 </div>
@@ -31,9 +32,13 @@ else
 @code{
     public IEnumerable<Employee> Employees { get; set; }
 
+    [Inject]
+    public IEmployeeService EmployeeService { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        await Task.Run(LoadEmployeesHardCoded);
+        //await Task.Run(LoadEmployeesHardCoded);
+        Employees = await EmployeeService.GetEmployees();
     }
 
     private void LoadEmployeesHardCoded()
