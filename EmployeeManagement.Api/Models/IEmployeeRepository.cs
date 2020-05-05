@@ -11,6 +11,7 @@ namespace EmployeeManagement.Api.Models
         Task<Employee> GetEmployee(int employeeId);
         Task<Employee> AddEmployee(Employee employee);
         Task<Employee> UpdateEmployee(Employee employee);
-        void DeleteEmployee(int employeeID);
+        Task<Employee> DeleteEmployee(int employeeID);
+        Task<IEnumerable<Employee>> Search(string name, Gender? gender);
     }
 }
