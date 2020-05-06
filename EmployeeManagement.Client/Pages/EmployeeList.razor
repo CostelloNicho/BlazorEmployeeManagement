@@ -3,37 +3,33 @@
 @using System.Collections.Generic;
 @using EmployeeManagement.Client.Services;
 
-<h3>Emplyee List</h3>
+<input type="checkbox" id="showFooter" @bind="ShowFooter" />
+<label for="showFooter">Show Footer</label>
 
-@if(Employees == null)
+@if (Employees == null)
 {
-    <div class="lds-dual-ring"></div>
+    <div class="spinner"></div>
 }
 else
 {
     <div class="card-deck">
-        @foreach(var employeeIndex in Employees)
+        @foreach (var employee in Employees)
         {
-            <div class="card m-3" style="min-width: 18rem; max-width:30.5%;">
-                <div class="card-header">
-                    <h3>@employeeIndex.FirstName @employeeIndex.LastName</h3>
-                </div>
-                <img class="card-img-top imageThumbnail" src="@employeeIndex.PhotoPath"/>
-                <div class="card-footer text-center">
-                    <a href="@($"employeedetails/{employeeIndex.EmployeeId}")" class="btn btn-primary m-1">View</a>
-                    <a href="#" class="btn btn-primary m-1">Edit</a>
-                    <a href="#" class="btn btn-danger m-1">Delete</a>
-                </div>
-            </div>
+            <DisplayEmployee Employee="employee" ShowFooter="ShowFooter">
+            </DisplayEmployee>
         }
     </div>
 }
+
 
 @code{
     public IEnumerable<Employee> Employees { get; set; }
 
     [Inject]
     public IEmployeeService EmployeeService { get; set; }
+
+    public bool ShowFooter { get; set; } = true;
+
 
     protected override async Task OnInitializedAsync()
     {
