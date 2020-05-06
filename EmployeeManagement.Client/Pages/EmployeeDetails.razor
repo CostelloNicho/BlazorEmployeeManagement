@@ -3,6 +3,12 @@
 @using EmployeeManagement.Model
 @using EmployeeManagement.Client.Services;
 
+@if (Employee == null || Employee.Department == null)
+{
+    <div class="lds-dual-ring"></div>
+}
+else
+{
     <div class="row justify-content-center m-3">
         <div class="col-sm-8">
             <div class="card">
@@ -15,7 +21,7 @@
 
                     <h4>Employee ID : @Employee.EmployeeId</h4>
                     <h4>Email : @Employee.Email</h4>
-                    <h4>Department : @Employee.DepartmentId</h4>
+                    <h4>Department : @Employee.Department.DepartmentName</h4>
                 </div>
                 <div class="card-footer text-center">
                     <a href="/" class="btn btn-primary">Back</a>
@@ -25,6 +31,8 @@
             </div>
         </div>
     </div>
+}
+
 
 
 
