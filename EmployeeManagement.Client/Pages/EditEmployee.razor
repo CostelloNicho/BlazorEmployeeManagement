@@ -1,0 +1,80 @@
+﻿@page "/editemployee/{id}"
+
+@using EmployeeManagement.Model;
+@using EmployeeManagement.Client.Services;
+@using System.Linq;
+@using System.Collections.Generic;
+@using Microsoft.AspNetCore.Components;
+@using System.Threading.Tasks;
+
+
+    <EditForm Model="@Employee">
+        <h3>Edit Employee</h3>
+        <hr />
+        <div class="form-group row">
+            <label for="firstName" class="col-sm-2 col-form-label">
+                First Name
+            </label>
+            <div class="col-sm-10">
+                <InputText id="firstName" class="form-control" placeholder="First Name"
+                           @bind-Value="Employee.FirstName" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="lastName" class="col-sm-2 col-form-label">
+                Last Name
+            </label>
+            <div class="col-sm-10">
+                <InputText id="lastName" class="form-control" placeholder="Last Name"
+                           @bind-Value="Employee.LastName" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="email" class="col-sm-2 col-form-label">
+                Email
+            </label>
+            <div class="col-sm-10">
+                <InputText id="email" class="form-control" placeholder="Email"
+                           @bind-Value="Employee.Email" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="department" class="col-sm-2 col-form-label">
+                Department
+            </label>
+            <div class="col-sm-10">
+                <InputSelect id="department" @bind-Value="DepartmentId" class="form-control">
+                    @foreach (var dept in Departments)
+                    {
+                        <option value="@dept.DepartmentId">@dept.DepartmentName</option>
+                    }
+                </InputSelect>
+            </div>
+        </div>
+    </EditForm>
+
+@code {
+
+    public Employee Employee { get; set; } = new Employee();
+
+    [Inject]
+    public IEmployeeService EmployeeService { get; set; }
+
+    [Parameter]
+    public string Id { get; set; }
+
+    [Inject]
+    public IDepartmentService DepartmentService { get; set; }
+
+    public List<Department> Departments { get; set; } = new List<Department>();
+
+    public string DepartmentId { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        Employee = await EmployeeService.GetEmployee(int.Parse(Id));
+        Departments = (await DepartmentService.GetDepartments()).ToList();
+        DepartmentId = Employee.DepartmentId.ToString();
+    }
+
+}

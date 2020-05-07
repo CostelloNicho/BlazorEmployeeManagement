@@ -12,13 +12,14 @@
 }
 else
 {
-    <div class="card-deck">
-        @foreach (var employee in Employees)
-        {
-            <DisplayEmployee Employee="employee" ShowFooter="ShowFooter">
-            </DisplayEmployee>
-        }
-    </div>
+<div class="card-deck">
+    @foreach (var employee in Employees)
+    {
+        <DisplayEmployee Employee="employee" ShowFooter="ShowFooter"
+                         OnEmployeeSelection="EmployeeSelectionChanged">
+        </DisplayEmployee>
+    }
+</div>
 }
 
 
@@ -29,6 +30,20 @@ else
     public IEmployeeService EmployeeService { get; set; }
 
     public bool ShowFooter { get; set; } = true;
+
+    protected int SelectedEmployeesCount { get; set; } = 0;
+
+    protected void EmployeeSelectionChanged(bool isSelected)
+    {
+        if (isSelected)
+        {
+            SelectedEmployeesCount++;
+        }
+        else
+        {
+            SelectedEmployeesCount--;
+        }
+    }
 
 
     protected override async Task OnInitializedAsync()
